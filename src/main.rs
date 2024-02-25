@@ -1,13 +1,13 @@
-use dotenv::from_filename;
+use bdk::{bitcoin::Network, database::MemoryDatabase, Wallet};
 use std::env;
 
-enum Result<String, VarError> {
-    Ok(String),
-    Err(VarError),
+fn function_that_takes_strins(s: String) {
+    println!("String: {}", s);
 }
 
 fn main() {
-    from_filename(".env").ok();
+    dotenv::from_filename(".env").ok();
+    dotenv::dotenv().ok();
 
     let result_descriptor = env::var("WALLET_DESCRIPTOR");
 
@@ -17,4 +17,14 @@ fn main() {
     };
 
     println!("Descriptor: {}", descriptor);
+
+    let str_desc = "WALLET_DESCRIPTOR";
+    let string_desc = String::from(str_desc);
+
+    let wallet = Wallet::new(
+        &descriptor.clone(),
+        None,
+        Network::Testnet,
+        MemoryDatabase::default(),
+    )?;
 }
